@@ -1,12 +1,9 @@
-<h1 style="color:red;text-align:center;font-size:30px">
-TEST CHANGE ✔
-</h1>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>STRONG_MOD</title>
+<title>STRONG_MOD STORE</title>
 
 <style>
 body{
@@ -21,8 +18,8 @@ background:#111827;
 padding:18px;
 text-align:center;
 font-size:24px;
-color:#00bfff;
 font-weight:bold;
+color:#00bfff;
 }
 
 .search{
@@ -36,6 +33,28 @@ padding:12px;
 border-radius:10px;
 border:none;
 outline:none;
+}
+
+.tabs{
+display:flex;
+justify-content:center;
+gap:8px;
+flex-wrap:wrap;
+margin:10px;
+}
+
+.tab{
+padding:7px 10px;
+background:#1f2937;
+border-radius:8px;
+cursor:pointer;
+font-size:12px;
+}
+
+.tab.active{
+background:#00bfff;
+color:black;
+font-weight:bold;
 }
 
 .apps{
@@ -76,33 +95,42 @@ display:inline-block;
 margin-top:5px;
 }
 
-.tabs{
-display:flex;
-justify-content:center;
-gap:8px;
-margin:10px;
-flex-wrap:wrap;
+#detailPage{
+display:none;
+padding:15px;
 }
 
-.tab{
-padding:7px 10px;
-background:#1f2937;
-border-radius:8px;
-cursor:pointer;
-font-size:12px;
+#detailPage img{
+width:100%;
+border-radius:15px;
+height:200px;
+object-fit:cover;
 }
 
-.tab.active{
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
 background:#00bfff;
 color:black;
 font-weight:bold;
+cursor:pointer;
+}
+.back{
+background:#1f2937;
+color:white;
 }
 </style>
 </head>
 
 <body>
 
-<header>STRONG_MOD</header>
+<header>STRONG_MOD STORE</header>
+
+<!-- HOME -->
+<div id="homePage">
 
 <div class="tabs">
 <div class="tab active" onclick="setCat('all')">All</div>
@@ -112,76 +140,76 @@ font-weight:bold;
 </div>
 
 <div class="search">
-<input type="text" id="searchInput" placeholder="Search apps..." onkeyup="filterApps()">
+<input type="text" id="searchInput" placeholder="Search apps..." onkeyup="renderApps()">
 </div>
 
 <div id="apps" class="apps"></div>
+</div>
+
+<!-- DETAIL -->
+<div id="detailPage">
+<h2 id="name"></h2>
+<img id="img">
+<p id="cat"></p>
+<p id="desc"></p>
+
+<button id="downloadBtn">Download</button>
+<button class="back" onclick="back()">Back</button>
+</div>
 
 <script>
-const apps = [
-{name:"WhatsApp",category:"apps",img:"https://i.imgur.com/7k12ZQm.png",desc:"Messaging app"},
-{name:"Instagram",category:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social media"},
-{name:"TikTok",category:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Short videos"},
-{name:"Spotify",category:"apps",img:"https://i.imgur.com/2lZ4KfF.png",desc:"Music streaming"},
-
-{name:"Free Fire",category:"games",img:"https://i.imgur.com/1XQ9ZQm.png",desc:"Battle royale"},
-{name:"PUBG Mobile",category:"games",img:"https://i.imgur.com/9vQ2x7m.png",desc:"Shooter game"},
-
-{name:"VPN Master",category:"tools",img:"https://i.imgur.com/6kT9pZQ.png",desc:"Secure VPN"},
-{name:"File Manager",category:"tools",img:"https://i.imgur.com/8pQ1mZx.png",desc:"Manage files"}
-];
 
 let currentCat="all";
 
+const apps=[
+{name:"WhatsApp",cat:"apps",img:"https://i.imgur.com/7k12ZQm.png",desc:"Messaging app",link:"https://play.google.com"},
+{name:"Instagram",cat:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social media",link:"https://play.google.com"},
+{name:"TikTok",cat:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Short videos",link:"https://play.google.com"},
+{name:"Spotify",cat:"apps",img:"https://i.imgur.com/2lZ4KfF.png",desc:"Music streaming",link:"https://play.google.com"},
+
+{name:"Free Fire",cat:"games",img:"https://i.imgur.com/1XQ9ZQm.png",desc:"Battle royale game",link:"https://play.google.com"},
+{name:"PUBG Mobile",cat:"games",img:"https://i.imgur.com/9vQ2x7m.png",desc:"Shooter game",link:"https://play.google.com"},
+
+{name:"VPN Master",cat:"tools",img:"https://i.imgur.com/6kT9pZQ.png",desc:"Secure VPN",link:"https://play.google.com"},
+{name:"File Manager",cat:"tools",img:"https://i.imgur.com/8pQ1mZx.png",desc:"Manage files",link:"https://play.google.com"},
+{name:"Cleaner",cat:"tools",img:"https://i.imgur.com/5yZ1QkL.png",desc:"Clean phone",link:"https://play.google.com"}
+];
+
 const container=document.getElementById("apps");
 
-function render(list){
+function renderApps(){
+let val=document.getElementById("searchInput").value.toLowerCase();
+
+let list=apps.filter(a=>{
+return (currentCat==="all" || a.cat===currentCat)
+&& a.name.toLowerCase().includes(val);
+});
+
 container.innerHTML="";
 
 list.forEach(app=>{
-const card=document.createElement("div");
-card.className="card";
+let div=document.createElement("div");
+div.className="card";
 
-card.onclick=()=>{
-window.location.href = "app.html?name=" + encodeURIComponent(app.name);
+div.onclick=()=>{
+openApp(app);
 };
 
-card.innerHTML=`
+div.innerHTML=`
 <img src="${app.img}">
 <div class="card-content">
 <h3>${app.name}</h3>
-<p>${app.category}</p>
+<p>${app.cat}</p>
 <span class="badge">APP</span>
 </div>
 `;
 
-container.appendChild(card);
+container.appendChild(div);
 });
-}
-
-function filterApps(){
-let list=apps;
-
-if(currentCat!=="all"){
-list=list.filter(a=>a.category===currentCat);
-}
-
-const val=document.getElementById("searchInput").value.toLowerCase();
-
-list=list.filter(a=>a.name.toLowerCase().includes(val));
-
-render(list);
 }
 
 function setCat(cat){
 currentCat=cat;
 document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 event.target.classList.add("active");
-filterApps();
-}
-
-render(apps);
-</script>
-
-</body>
-</html>
+renderApps();
