@@ -22,27 +22,6 @@ color:#00bfff;
 font-weight:bold;
 }
 
-.tabs{
-display:flex;
-justify-content:center;
-gap:10px;
-margin:10px;
-}
-
-.tab{
-padding:8px 12px;
-background:#1f2937;
-border-radius:10px;
-cursor:pointer;
-font-size:13px;
-}
-
-.tab.active{
-background:#00bfff;
-color:black;
-font-weight:bold;
-}
-
 .search{
 text-align:center;
 margin:10px;
@@ -94,6 +73,27 @@ display:inline-block;
 margin-top:5px;
 }
 
+.tabs{
+display:flex;
+justify-content:center;
+gap:10px;
+margin:10px;
+}
+
+.tab{
+padding:7px 10px;
+background:#1f2937;
+border-radius:8px;
+cursor:pointer;
+font-size:12px;
+}
+
+.tab.active{
+background:#00bfff;
+color:black;
+font-weight:bold;
+}
+
 #detailPage{
 display:none;
 padding:15px;
@@ -111,7 +111,6 @@ margin-top:10px;
 cursor:pointer;
 }
 </style>
-
 </head>
 
 <body>
@@ -128,7 +127,7 @@ cursor:pointer;
 </div>
 
 <div class="search">
-<input type="text" id="searchInput" placeholder="Search..." onkeyup="searchApps()">
+<input type="text" id="searchInput" placeholder="Search apps..." onkeyup="filterApps()">
 </div>
 
 <div id="apps" class="apps"></div>
@@ -147,20 +146,111 @@ cursor:pointer;
 </div>
 
 <script>
-const apps = [
+
+const API_URL = "https://api.sampleapis.com/mobileapps/androidapps";
+
+let apps = [];
+let currentCat = "all";
+
+const container = document.getElementById("apps");
+
+async function loadApps(){
+try{
+const res = await fetch(API_URL);
+const data = await res.json();
+
+apps = data.map(app => ({
+name: app.name || "No name",
+category: app.category || "apps",
+img: app.icon || "https://via.placeholder.com/300x200",
+desc: app.description || "No description available",
+download: app.website || "https://play.google.com"
+}));
+
+render(apps);
+}
+catch(e){
+console.log("API error", e);
+
+// fallback (لو API ما اشتغل)
+apps = [
 {name:"WhatsApp",category:"apps",img:"https://i.imgur.com/7k12ZQm.png",desc:"Messaging app",download:"https://play.google.com"},
-{name:"Instagram",category:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social media",download:"https://play.google.com"},
-{name:"TikTok",category:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Short videos",download:"https://play.google.com"},
-{name:"Spotify",category:"apps",img:"https://i.imgur.com/2lZ4KfF.png",desc:"Music streaming",download:"https://play.google.com"},
-
-{name:"Free Fire",category:"games",img:"https://i.imgur.com/1XQ9ZQm.png",desc:"Battle royale game",download:"https://play.google.com"},
-{name:"PUBG Mobile",category:"games",img:"https://i.imgur.com/9vQ2x7m.png",desc:"Survival shooter",download:"https://play.google.com"},
-{name:"Subway Surfers",category:"games",img:"https://i.imgur.com/4yQ8aZp.png",desc:"Endless runner",download:"https://play.google.com"},
-
-{name:"VPN Master",category:"tools",img:"https://i.imgur.com/6kT9pZQ.png",desc:"Secure VPN service",download:"https://play.google.com"},
-{name:"Files Manager",category:"tools",img:"https://i.imgur.com/8pQ1mZx.png",desc:"Manage your files",download:"https://play.google.com"}
+{name:"Instagram",category:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social app",download:"https://play.google.com"},
+{name:"TikTok",category:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Videos",download:"https://play.google.com"}
 ];
 
-let currentCat="all";
+render(apps);
+}
+}
 
-const container=document
+function render(list){
+container.innerHTML="";
+
+list.forEach(app=>{
+const card=document.createElement("div");
+card.className="card";
+card.onclick=()=>openApp(app);
+
+card.innerHTML=`
+<img src="${app.img}">
+<div class="card-content">
+<h3>${app.name}</h3>
+<p>${app.category}</p>
+<span class="badge">APP</span>
+</div>
+`;
+
+container.appendChild(card);
+});
+}
+
+function filterApps(){
+let list = apps;
+
+if(currentCat !== "all"){
+list = list.filter(a => a.category === currentCat);
+}
+
+const val = document.getElementById("searchInput").value.toLowerCase();
+
+list = list.filter(a =>
+a.name.toLowerCase().includes(val)
+);
+
+render(list);
+}
+
+function setCat(cat){
+currentCat = cat;
+
+document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+event.target.classList.add("active");
+
+filterApps();
+}
+
+function openApp(app){
+document.getElementById("homePage").style.display="none";
+document.getElementById("detailPage").style.display="block";
+
+document.getElementById("appName").innerText=app.name;
+document.getElementById("appImg").src=app.img;
+document.getElementById("appCat").innerText=app.category;
+document.getElementById("appDesc").innerText=app.desc;
+
+document.getElementById("downloadBtn").onclick=()=>{
+window.open(app.download,"_blank");
+};
+}
+
+function back(){
+document.getElementById("homePage").style.display="block";
+document.getElementById("detailPage").style.display="none";
+}
+
+loadApps();
+
+</script>
+
+</body>
+</html>
