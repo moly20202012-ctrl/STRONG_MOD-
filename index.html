@@ -95,6 +95,12 @@ display:inline-block;
 margin-top:5px;
 }
 
+.featured{
+color:#00ffcc;
+font-size:12px;
+margin-left:5px;
+}
+
 #detailPage{
 display:none;
 padding:15px;
@@ -118,6 +124,7 @@ color:black;
 font-weight:bold;
 cursor:pointer;
 }
+
 .back{
 background:#1f2937;
 color:white;
@@ -137,6 +144,7 @@ color:white;
 <div class="tab" onclick="setCat('apps')">Apps</div>
 <div class="tab" onclick="setCat('games')">Games</div>
 <div class="tab" onclick="setCat('tools')">Tools</div>
+<div class="tab" onclick="setCat('featured')">Featured</div>
 </div>
 
 <div class="search">
@@ -162,28 +170,33 @@ color:white;
 let currentCat="all";
 
 const apps=[
-{name:"WhatsApp",cat:"apps",img:"https://i.imgur.com/7k12ZQm.png",desc:"Messaging app",link:"https://play.google.com"},
-{name:"Instagram",cat:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social media",link:"https://play.google.com"},
-{name:"TikTok",cat:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Short videos",link:"https://play.google.com"},
-{name:"Spotify",cat:"apps",img:"https://i.imgur.com/2lZ4KfF.png",desc:"Music streaming",link:"https://play.google.com"},
+{name:"WhatsApp",cat:"apps",img:"https://i.imgur.com/7k12ZQm.png",desc:"Messaging app",link:"https://play.google.com",featured:true},
+{name:"Instagram",cat:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social media",link:"https://play.google.com",featured:true},
+{name:"TikTok",cat:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Short videos",link:"https://play.google.com",featured:true},
+{name:"Spotify",cat:"apps",img:"https://i.imgur.com/2lZ4KfF.png",desc:"Music streaming",link:"https://play.google.com",featured:false},
 
-{name:"Free Fire",cat:"games",img:"https://i.imgur.com/1XQ9ZQm.png",desc:"Battle royale game",link:"https://play.google.com"},
-{name:"PUBG Mobile",cat:"games",img:"https://i.imgur.com/9vQ2x7m.png",desc:"Shooter game",link:"https://play.google.com"},
+{name:"Free Fire",cat:"games",img:"https://i.imgur.com/1XQ9ZQm.png",desc:"Battle royale game",link:"https://play.google.com",featured:true},
+{name:"PUBG Mobile",cat:"games",img:"https://i.imgur.com/9vQ2x7m.png",desc:"Shooter game",link:"https://play.google.com",featured:true},
+{name:"Subway Surfers",cat:"games",img:"https://i.imgur.com/4yQ8aZp.png",desc:"Endless runner",link:"https://play.google.com",featured:false},
 
-{name:"VPN Master",cat:"tools",img:"https://i.imgur.com/6kT9pZQ.png",desc:"Secure VPN",link:"https://play.google.com"},
-{name:"File Manager",cat:"tools",img:"https://i.imgur.com/8pQ1mZx.png",desc:"Manage files",link:"https://play.google.com"},
-{name:"Cleaner",cat:"tools",img:"https://i.imgur.com/5yZ1QkL.png",desc:"Clean phone",link:"https://play.google.com"}
+{name:"VPN Master",cat:"tools",img:"https://i.imgur.com/6kT9pZQ.png",desc:"Secure VPN",link:"https://play.google.com",featured:false},
+{name:"File Manager",cat:"tools",img:"https://i.imgur.com/8pQ1mZx.png",desc:"Manage files",link:"https://play.google.com",featured:false},
+{name:"Cleaner Pro",cat:"tools",img:"https://i.imgur.com/5yZ1QkL.png",desc:"Clean phone storage",link:"https://play.google.com",featured:true}
 ];
 
 const container=document.getElementById("apps");
 
 function renderApps(){
+
 let val=document.getElementById("searchInput").value.toLowerCase();
 
 let list=apps.filter(a=>{
-return (currentCat==="all" || a.cat===currentCat)
-&& a.name.toLowerCase().includes(val);
-});
+
+if(currentCat==="all") return true;
+if(currentCat==="featured") return a.featured;
+return a.cat===currentCat;
+
+}).filter(a=>a.name.toLowerCase().includes(val));
 
 container.innerHTML="";
 
@@ -191,14 +204,12 @@ list.forEach(app=>{
 let div=document.createElement("div");
 div.className="card";
 
-div.onclick=()=>{
-openApp(app);
-};
+div.onclick=()=>openApp(app);
 
 div.innerHTML=`
 <img src="${app.img}">
 <div class="card-content">
-<h3>${app.name}</h3>
+<h3>${app.name} ${app.featured ? '<span class="featured">★</span>' : ''}</h3>
 <p>${app.cat}</p>
 <span class="badge">APP</span>
 </div>
@@ -213,3 +224,30 @@ currentCat=cat;
 document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 event.target.classList.add("active");
 renderApps();
+}
+
+function openApp(app){
+document.getElementById("homePage").style.display="none";
+document.getElementById("detailPage").style.display="block";
+
+document.getElementById("name").innerText=app.name;
+document.getElementById("img").src=app.img;
+document.getElementById("cat").innerText=app.cat;
+document.getElementById("desc").innerText=app.desc;
+
+document.getElementById("downloadBtn").onclick=()=>{
+window.open(app.link,"_blank");
+};
+}
+
+function back(){
+document.getElementById("homePage").style.display="block";
+document.getElementById("detailPage").style.display="none";
+}
+
+renderApps();
+
+</script>
+
+</body>
+</html>
