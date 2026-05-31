@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App Details - STRONG_MOD</title>
+<title>App Details</title>
 
 <style>
 body{
@@ -18,7 +18,6 @@ background:#111827;
 padding:15px;
 text-align:center;
 color:#00bfff;
-font-size:20px;
 font-weight:bold;
 }
 
@@ -28,13 +27,12 @@ padding:15px;
 
 img{
 width:100%;
-border-radius:15px;
 height:200px;
 object-fit:cover;
+border-radius:15px;
 }
 
 h2{
-margin:10px 0;
 color:#00bfff;
 }
 
@@ -44,7 +42,6 @@ padding:5px 10px;
 border-radius:8px;
 font-size:12px;
 display:inline-block;
-margin:5px 0;
 }
 
 p{
@@ -74,76 +71,49 @@ color:white;
 
 <header>STRONG_MOD</header>
 
-<div class="container" id="content">
-Loading...
-</div>
+<div class="container" id="content">Loading...</div>
 
 <script>
-// نفس بيانات التطبيقات (مؤقتًا)
+
 const apps = [
-{
-name:"WhatsApp",
-category:"apps",
-img:"https://i.imgur.com/7k12ZQm.png",
-desc:"Fast messaging app",
-download:"https://play.google.com"
-},
-{
-name:"Instagram",
-category:"apps",
-img:"https://i.imgur.com/8Km9tLL.png",
-desc:"Share photos and videos",
-download:"https://play.google.com"
-},
-{
-name:"TikTok",
-category:"apps",
-img:"https://i.imgur.com/3JmNQ0r.png",
-desc:"Short videos platform",
-download:"https://play.google.com"
-},
-{
-name:"Spotify",
-category:"apps",
-img:"https://i.imgur.com/2lZ4KfF.png",
-desc:"Music streaming service",
-download:"https://play.google.com"
-}
+{name:"WhatsApp",category:"apps",img:"https://i.imgur.com/7k12ZQm.png",desc:"Messaging app",download:"https://play.google.com"},
+{name:"Instagram",category:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social media",download:"https://play.google.com"},
+{name:"TikTok",category:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Short videos platform",download:"https://play.google.com"},
+{name:"Spotify",category:"apps",img:"https://i.imgur.com/2lZ4KfF.png",desc:"Music streaming service",download:"https://play.google.com"},
+
+{name:"Free Fire",category:"games",img:"https://i.imgur.com/1XQ9ZQm.png",desc:"Battle royale game",download:"https://play.google.com"},
+{name:"PUBG Mobile",category:"games",img:"https://i.imgur.com/9vQ2x7m.png",desc:"Shooter game",download:"https://play.google.com"}
 ];
 
-function getAppName(){
-const params = new URLSearchParams(window.location.search);
-return params.get("name");
+function getName(){
+const url=new URLSearchParams(window.location.search);
+return url.get("name");
 }
 
-function loadApp(){
-const name = getAppName();
-const app = apps.find(a => a.name === name);
+function load(){
+const name=getName();
+const app=apps.find(a=>a.name===name);
 
-const container = document.getElementById("content");
+const c=document.getElementById("content");
 
 if(!app){
-container.innerHTML = "<h2>App not found</h2>";
+c.innerHTML="<h2>App not found</h2>";
 return;
 }
 
-container.innerHTML = `
+c.innerHTML=`
 <img src="${app.img}">
 <h2>${app.name}</h2>
 <span class="badge">${app.category}</span>
 <p>${app.desc}</p>
 
-<button onclick="window.open('${app.download}','_blank')">
-Download
-</button>
-
-<button class="back" onclick="history.back()">
-Back
-</button>
+<button onclick="window.open('${app.download}','_blank')">Download</button>
+<button class="back" onclick="history.back()">Back</button>
 `;
 }
 
-loadApp();
+load();
+
 </script>
 
 </body>
