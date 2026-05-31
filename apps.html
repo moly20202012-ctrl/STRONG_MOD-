@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App Details - STRONG_MOD</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0f0f1a;
+color:white;
+}
+
+header{
+background:#111827;
+padding:15px;
+text-align:center;
+color:#00bfff;
+font-size:20px;
+font-weight:bold;
+}
+
+.container{
+padding:15px;
+}
+
+img{
+width:100%;
+border-radius:15px;
+height:200px;
+object-fit:cover;
+}
+
+h2{
+margin:10px 0;
+color:#00bfff;
+}
+
+.badge{
+background:#2563eb;
+padding:5px 10px;
+border-radius:8px;
+font-size:12px;
+display:inline-block;
+margin:5px 0;
+}
+
+p{
+color:#d1d5db;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#00bfff;
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+.back{
+background:#1f2937;
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>STRONG_MOD</header>
+
+<div class="container" id="content">
+Loading...
+</div>
+
+<script>
+// نفس بيانات التطبيقات (مؤقتًا)
+const apps = [
+{
+name:"WhatsApp",
+category:"apps",
+img:"https://i.imgur.com/7k12ZQm.png",
+desc:"Fast messaging app",
+download:"https://play.google.com"
+},
+{
+name:"Instagram",
+category:"apps",
+img:"https://i.imgur.com/8Km9tLL.png",
+desc:"Share photos and videos",
+download:"https://play.google.com"
+},
+{
+name:"TikTok",
+category:"apps",
+img:"https://i.imgur.com/3JmNQ0r.png",
+desc:"Short videos platform",
+download:"https://play.google.com"
+},
+{
+name:"Spotify",
+category:"apps",
+img:"https://i.imgur.com/2lZ4KfF.png",
+desc:"Music streaming service",
+download:"https://play.google.com"
+}
+];
+
+function getAppName(){
+const params = new URLSearchParams(window.location.search);
+return params.get("name");
+}
+
+function loadApp(){
+const name = getAppName();
+const app = apps.find(a => a.name === name);
+
+const container = document.getElementById("content");
+
+if(!app){
+container.innerHTML = "<h2>App not found</h2>";
+return;
+}
+
+container.innerHTML = `
+<img src="${app.img}">
+<h2>${app.name}</h2>
+<span class="badge">${app.category}</span>
+<p>${app.desc}</p>
+
+<button onclick="window.open('${app.download}','_blank')">
+Download
+</button>
+
+<button class="back" onclick="history.back()">
+Back
+</button>
+`;
+}
+
+loadApp();
+</script>
+
+</body>
+</html>
