@@ -1,169 +1,175 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>STRONG_MOD</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>STRONG_MOD</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f1a;
-      color: white;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f0f1a;
+  color: white;
+}
 
-    header {
-      background: #111827;
-      padding: 20px;
-      text-align: center;
-      font-size: 26px;
-      font-weight: bold;
-      color: #00bfff;
-      letter-spacing: 1px;
-    }
+header {
+  background: #111827;
+  padding: 18px;
+  text-align: center;
+  font-size: 24px;
+  color: #00bfff;
+  font-weight: bold;
+}
 
-    .search {
-      text-align: center;
-      margin: 20px;
-    }
+.search {
+  text-align: center;
+  margin: 15px;
+}
 
-    input {
-      width: 85%;
-      padding: 12px;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-    }
+input {
+  width: 85%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
 
-    .apps {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      padding: 15px;
-    }
+.apps {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 15px;
+}
 
-    .card {
-      background: #1f2937;
-      padding: 15px;
-      border-radius: 14px;
-      transition: 0.2s;
-      cursor: pointer;
-    }
+.card {
+  background: #1f2937;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: 0.2s;
+}
 
-    .card:hover {
-      background: #374151;
-      transform: scale(1.03);
-    }
+.card:hover {
+  transform: scale(1.03);
+}
 
-    .card h3 {
-      margin: 0;
-      color: #00bfff;
-    }
+.card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
 
-    .card p {
-      margin: 5px 0;
-      font-size: 14px;
-      color: #d1d5db;
-    }
+.card-content {
+  padding: 10px;
+}
 
-    .card small {
-      color: #9ca3af;
-    }
+.card h3 {
+  margin: 0;
+  color: #00bfff;
+}
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: gray;
-      font-size: 13px;
-    }
+.card p {
+  margin: 5px 0;
+  font-size: 13px;
+  color: #d1d5db;
+}
 
-    @media (max-width: 600px) {
-      .apps {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  font-size: 11px;
+  background: #2563eb;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: gray;
+}
+</style>
+
 </head>
 
 <body>
 
-<header>
-  STRONG_MOD
-</header>
+<header>STRONG_MOD</header>
 
 <div class="search">
-  <input type="text" id="searchInput" placeholder="Search apps..." onkeyup="searchApps()"/>
+<input type="text" id="searchInput" placeholder="Search apps..." onkeyup="searchApps()">
 </div>
 
 <div id="apps" class="apps"></div>
 
-<footer>
-  © 2026 STRONG_MOD - All rights reserved
-</footer>
+<footer>© 2026 STRONG_MOD</footer>
 
 <script>
-  const apps = [
-    {
-      name: "WhatsApp",
-      category: "Messaging",
-      desc: "Fast and secure messaging app"
-    },
-    {
-      name: "Instagram",
-      category: "Social",
-      desc: "Share photos and videos"
-    },
-    {
-      name: "TikTok",
-      category: "Entertainment",
-      desc: "Short video platform"
-    },
-    {
-      name: "Spotify",
-      category: "Music",
-      desc: "Listen to millions of songs"
-    },
-    {
-      name: "Telegram",
-      category: "Messaging",
-      desc: "Cloud-based messaging app"
-    },
-    {
-      name: "YouTube",
-      category: "Video",
-      desc: "Watch and upload videos"
-    }
-  ];
+const apps = [
+{
+name: "WhatsApp",
+category: "Messaging",
+img: "https://i.imgur.com/7k12ZQm.png"
+},
+{
+name: "Instagram",
+category: "Social",
+img: "https://i.imgur.com/8Km9tLL.png"
+},
+{
+name: "TikTok",
+category: "Entertainment",
+img: "https://i.imgur.com/3JmNQ0r.png"
+},
+{
+name: "Spotify",
+category: "Music",
+img: "https://i.imgur.com/2lZ4KfF.png"
+},
+{
+name: "Telegram",
+category: "Messaging",
+img: "https://i.imgur.com/5u2zQhJ.png"
+},
+{
+name: "YouTube",
+category: "Video",
+img: "https://i.imgur.com/0y8Ftya.png"
+}
+];
 
-  const container = document.getElementById("apps");
+const container = document.getElementById("apps");
 
-  function renderApps(list) {
-    container.innerHTML = "";
-    list.forEach(app => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <h3>${app.name}</h3>
-        <p>${app.category}</p>
-        <small>${app.desc}</small>
-      `;
-      container.appendChild(card);
-    });
-  }
+function render(list){
+container.innerHTML = "";
 
-  function searchApps() {
-    const value = document.getElementById("searchInput").value.toLowerCase();
-    const filtered = apps.filter(app =>
-      app.name.toLowerCase().includes(value) ||
-      app.category.toLowerCase().includes(value)
-    );
-    renderApps(filtered);
-  }
+list.forEach(app => {
+const card = document.createElement("div");
+card.className = "card";
 
-  renderApps(apps);
+card.innerHTML = `
+<img src="${app.img}" />
+<div class="card-content">
+<h3>${app.name}</h3>
+<p>${app.category}</p>
+<span class="badge">APP</span>
+</div>
+`;
+
+container.appendChild(card);
+});
+}
+
+function searchApps(){
+const val = document.getElementById("searchInput").value.toLowerCase();
+const filtered = apps.filter(a =>
+a.name.toLowerCase().includes(val) ||
+a.category.toLowerCase().includes(val)
+);
+render(filtered);
+}
+
+render(apps);
 </script>
 
 </body>
