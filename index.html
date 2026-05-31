@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STRONG_MOD</title>
 
 <style>
@@ -19,6 +19,28 @@ padding:18px;
 text-align:center;
 font-size:24px;
 color:#00bfff;
+font-weight:bold;
+}
+
+.tabs{
+display:flex;
+justify-content:center;
+gap:10px;
+margin:10px;
+flex-wrap:wrap;
+}
+
+.tab{
+padding:7px 10px;
+background:#1f2937;
+border-radius:8px;
+cursor:pointer;
+font-size:12px;
+}
+
+.tab.active{
+background:#00bfff;
+color:black;
 font-weight:bold;
 }
 
@@ -73,27 +95,6 @@ display:inline-block;
 margin-top:5px;
 }
 
-.tabs{
-display:flex;
-justify-content:center;
-gap:10px;
-margin:10px;
-}
-
-.tab{
-padding:7px 10px;
-background:#1f2937;
-border-radius:8px;
-cursor:pointer;
-font-size:12px;
-}
-
-.tab.active{
-background:#00bfff;
-color:black;
-font-weight:bold;
-}
-
 #detailPage{
 display:none;
 padding:15px;
@@ -127,7 +128,7 @@ cursor:pointer;
 </div>
 
 <div class="search">
-<input type="text" id="searchInput" placeholder="Search apps..." onkeyup="filterApps()">
+<input type="text" id="searchInput" placeholder="Search..." onkeyup="filterApps()">
 </div>
 
 <div id="apps" class="apps"></div>
@@ -137,7 +138,7 @@ cursor:pointer;
 <!-- DETAIL PAGE -->
 <div id="detailPage">
 <h2 id="appName"></h2>
-<img id="appImg" style="width:100%;border-radius:10px"/>
+<img id="appImg" style="width:100%;border-radius:10px">
 <p id="appCat"></p>
 <p id="appDesc"></p>
 
@@ -147,41 +148,84 @@ cursor:pointer;
 
 <script>
 
-const API_URL = "https://api.sampleapis.com/mobileapps/androidapps";
-
-let apps = [];
 let currentCat = "all";
 
-const container = document.getElementById("apps");
+const apps = [
+{
+name:"WhatsApp",
+category:"apps",
+img:"https://i.imgur.com/7k12ZQm.png",
+desc:"Messaging app",
+download:"https://play.google.com"
+},
+{
+name:"Instagram",
+category:"apps",
+img:"https://i.imgur.com/8Km9tLL.png",
+desc:"Social media app",
+download:"https://play.google.com"
+},
+{
+name:"TikTok",
+category:"apps",
+img:"https://i.imgur.com/3JmNQ0r.png",
+desc:"Short videos platform",
+download:"https://play.google.com"
+},
+{
+name:"Spotify",
+category:"apps",
+img:"https://i.imgur.com/2lZ4KfF.png",
+desc:"Music streaming",
+download:"https://play.google.com"
+},
 
-async function loadApps(){
-try{
-const res = await fetch(API_URL);
-const data = await res.json();
+{
+name:"Free Fire",
+category:"games",
+img:"https://i.imgur.com/1XQ9ZQm.png",
+desc:"Battle royale game",
+download:"https://play.google.com"
+},
+{
+name:"PUBG Mobile",
+category:"games",
+img:"https://i.imgur.com/9vQ2x7m.png",
+desc:"Shooter game",
+download:"https://play.google.com"
+},
+{
+name:"Subway Surfers",
+category:"games",
+img:"https://i.imgur.com/4yQ8aZp.png",
+desc:"Endless runner",
+download:"https://play.google.com"
+},
 
-apps = data.map(app => ({
-name: app.name || "No name",
-category: app.category || "apps",
-img: app.icon || "https://via.placeholder.com/300x200",
-desc: app.description || "No description available",
-download: app.website || "https://play.google.com"
-}));
-
-render(apps);
+{
+name:"VPN Master",
+category:"tools",
+img:"https://i.imgur.com/6kT9pZQ.png",
+desc:"Secure VPN tool",
+download:"https://play.google.com"
+},
+{
+name:"File Manager",
+category:"tools",
+img:"https://i.imgur.com/8pQ1mZx.png",
+desc:"Manage files easily",
+download:"https://play.google.com"
+},
+{
+name:"Cleaner App",
+category:"tools",
+img:"https://i.imgur.com/5yZ1QkL.png",
+desc:"Clean storage and boost phone",
+download:"https://play.google.com"
 }
-catch(e){
-console.log("API error", e);
-
-// fallback (لو API ما اشتغل)
-apps = [
-{name:"WhatsApp",category:"apps",img:"https://i.imgur.com/7k12ZQm.png",desc:"Messaging app",download:"https://play.google.com"},
-{name:"Instagram",category:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social app",download:"https://play.google.com"},
-{name:"TikTok",category:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Videos",download:"https://play.google.com"}
 ];
 
-render(apps);
-}
-}
+const container = document.getElementById("apps");
 
 function render(list){
 container.innerHTML="";
@@ -248,7 +292,7 @@ document.getElementById("homePage").style.display="block";
 document.getElementById("detailPage").style.display="none";
 }
 
-loadApps();
+render(apps);
 
 </script>
 
