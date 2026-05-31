@@ -22,28 +22,6 @@ color:#00bfff;
 font-weight:bold;
 }
 
-.tabs{
-display:flex;
-justify-content:center;
-gap:10px;
-margin:10px;
-flex-wrap:wrap;
-}
-
-.tab{
-padding:7px 10px;
-background:#1f2937;
-border-radius:8px;
-cursor:pointer;
-font-size:12px;
-}
-
-.tab.active{
-background:#00bfff;
-color:black;
-font-weight:bold;
-}
-
 .search{
 text-align:center;
 margin:10px;
@@ -95,21 +73,26 @@ display:inline-block;
 margin-top:5px;
 }
 
-#detailPage{
-display:none;
-padding:15px;
+.tabs{
+display:flex;
+justify-content:center;
+gap:8px;
+margin:10px;
+flex-wrap:wrap;
 }
 
-button{
+.tab{
+padding:7px 10px;
+background:#1f2937;
+border-radius:8px;
+cursor:pointer;
+font-size:12px;
+}
+
+.tab.active{
 background:#00bfff;
-border:none;
-padding:12px;
-width:100%;
-border-radius:10px;
 color:black;
 font-weight:bold;
-margin-top:10px;
-cursor:pointer;
 }
 </style>
 </head>
@@ -117,8 +100,6 @@ cursor:pointer;
 <body>
 
 <header>STRONG_MOD</header>
-
-<div id="homePage">
 
 <div class="tabs">
 <div class="tab active" onclick="setCat('all')">All</div>
@@ -128,104 +109,28 @@ cursor:pointer;
 </div>
 
 <div class="search">
-<input type="text" id="searchInput" placeholder="Search..." onkeyup="filterApps()">
+<input type="text" id="searchInput" placeholder="Search apps..." onkeyup="filterApps()">
 </div>
 
 <div id="apps" class="apps"></div>
 
-</div>
-
-<!-- DETAIL PAGE -->
-<div id="detailPage">
-<h2 id="appName"></h2>
-<img id="appImg" style="width:100%;border-radius:10px">
-<p id="appCat"></p>
-<p id="appDesc"></p>
-
-<button id="downloadBtn">Download</button>
-<button onclick="back()">Back</button>
-</div>
-
 <script>
-
-let currentCat = "all";
-
 const apps = [
-{
-name:"WhatsApp",
-category:"apps",
-img:"https://i.imgur.com/7k12ZQm.png",
-desc:"Messaging app",
-download:"https://play.google.com"
-},
-{
-name:"Instagram",
-category:"apps",
-img:"https://i.imgur.com/8Km9tLL.png",
-desc:"Social media app",
-download:"https://play.google.com"
-},
-{
-name:"TikTok",
-category:"apps",
-img:"https://i.imgur.com/3JmNQ0r.png",
-desc:"Short videos platform",
-download:"https://play.google.com"
-},
-{
-name:"Spotify",
-category:"apps",
-img:"https://i.imgur.com/2lZ4KfF.png",
-desc:"Music streaming",
-download:"https://play.google.com"
-},
+{name:"WhatsApp",category:"apps",img:"https://i.imgur.com/7k12ZQm.png",desc:"Messaging app"},
+{name:"Instagram",category:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social media"},
+{name:"TikTok",category:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Short videos"},
+{name:"Spotify",category:"apps",img:"https://i.imgur.com/2lZ4KfF.png",desc:"Music streaming"},
 
-{
-name:"Free Fire",
-category:"games",
-img:"https://i.imgur.com/1XQ9ZQm.png",
-desc:"Battle royale game",
-download:"https://play.google.com"
-},
-{
-name:"PUBG Mobile",
-category:"games",
-img:"https://i.imgur.com/9vQ2x7m.png",
-desc:"Shooter game",
-download:"https://play.google.com"
-},
-{
-name:"Subway Surfers",
-category:"games",
-img:"https://i.imgur.com/4yQ8aZp.png",
-desc:"Endless runner",
-download:"https://play.google.com"
-},
+{name:"Free Fire",category:"games",img:"https://i.imgur.com/1XQ9ZQm.png",desc:"Battle royale"},
+{name:"PUBG Mobile",category:"games",img:"https://i.imgur.com/9vQ2x7m.png",desc:"Shooter game"},
 
-{
-name:"VPN Master",
-category:"tools",
-img:"https://i.imgur.com/6kT9pZQ.png",
-desc:"Secure VPN tool",
-download:"https://play.google.com"
-},
-{
-name:"File Manager",
-category:"tools",
-img:"https://i.imgur.com/8pQ1mZx.png",
-desc:"Manage files easily",
-download:"https://play.google.com"
-},
-{
-name:"Cleaner App",
-category:"tools",
-img:"https://i.imgur.com/5yZ1QkL.png",
-desc:"Clean storage and boost phone",
-download:"https://play.google.com"
-}
+{name:"VPN Master",category:"tools",img:"https://i.imgur.com/6kT9pZQ.png",desc:"Secure VPN"},
+{name:"File Manager",category:"tools",img:"https://i.imgur.com/8pQ1mZx.png",desc:"Manage files"}
 ];
 
-const container = document.getElementById("apps");
+let currentCat="all";
+
+const container=document.getElementById("apps");
 
 function render(list){
 container.innerHTML="";
@@ -233,7 +138,10 @@ container.innerHTML="";
 list.forEach(app=>{
 const card=document.createElement("div");
 card.className="card";
-card.onclick=()=>openApp(app);
+
+card.onclick=()=>{
+window.location.href = "app.html?name=" + encodeURIComponent(app.name);
+};
 
 card.innerHTML=`
 <img src="${app.img}">
@@ -249,51 +157,27 @@ container.appendChild(card);
 }
 
 function filterApps(){
-let list = apps;
+let list=apps;
 
-if(currentCat !== "all"){
-list = list.filter(a => a.category === currentCat);
+if(currentCat!=="all"){
+list=list.filter(a=>a.category===currentCat);
 }
 
-const val = document.getElementById("searchInput").value.toLowerCase();
+const val=document.getElementById("searchInput").value.toLowerCase();
 
-list = list.filter(a =>
-a.name.toLowerCase().includes(val)
-);
+list=list.filter(a=>a.name.toLowerCase().includes(val));
 
 render(list);
 }
 
 function setCat(cat){
-currentCat = cat;
-
+currentCat=cat;
 document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
 event.target.classList.add("active");
-
 filterApps();
 }
 
-function openApp(app){
-document.getElementById("homePage").style.display="none";
-document.getElementById("detailPage").style.display="block";
-
-document.getElementById("appName").innerText=app.name;
-document.getElementById("appImg").src=app.img;
-document.getElementById("appCat").innerText=app.category;
-document.getElementById("appDesc").innerText=app.desc;
-
-document.getElementById("downloadBtn").onclick=()=>{
-window.open(app.download,"_blank");
-};
-}
-
-function back(){
-document.getElementById("homePage").style.display="block";
-document.getElementById("detailPage").style.display="none";
-}
-
 render(apps);
-
 </script>
 
 </body>
