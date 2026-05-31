@@ -74,13 +74,25 @@
 
 <div class="apps">
 
-  <div class="card">WhatsApp</div>
-  <div class="card">Instagram</div>
-  <div class="card">TikTok</div>
-  <div class="card">Spotify</div>
+  
+<div id="apps" class="apps"></div>
 
-</div>
+<script src="apps.js"></script>
 
+<script>
+  const container = document.getElementById("apps");
+
+  apps.forEach(app => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${app.name}</h3>
+      <p>${app.category}</p>
+      <small>${app.desc}</small>
+    `;
+    container.appendChild(card);
+  });
+</script>
 <footer>
   © 2026 STRONG_MOD
 </footer>
