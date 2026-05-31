@@ -22,9 +22,30 @@ color:#00bfff;
 font-weight:bold;
 }
 
+.tabs{
+display:flex;
+justify-content:center;
+gap:10px;
+margin:10px;
+}
+
+.tab{
+padding:8px 12px;
+background:#1f2937;
+border-radius:10px;
+cursor:pointer;
+font-size:13px;
+}
+
+.tab.active{
+background:#00bfff;
+color:black;
+font-weight:bold;
+}
+
 .search{
 text-align:center;
-margin:15px;
+margin:10px;
 }
 
 input{
@@ -99,8 +120,15 @@ cursor:pointer;
 
 <div id="homePage">
 
+<div class="tabs">
+<div class="tab active" onclick="setCat('all')">All</div>
+<div class="tab" onclick="setCat('apps')">Apps</div>
+<div class="tab" onclick="setCat('games')">Games</div>
+<div class="tab" onclick="setCat('tools')">Tools</div>
+</div>
+
 <div class="search">
-<input type="text" id="searchInput" placeholder="Search apps..." onkeyup="searchApps()">
+<input type="text" id="searchInput" placeholder="Search..." onkeyup="searchApps()">
 </div>
 
 <div id="apps" class="apps"></div>
@@ -119,87 +147,20 @@ cursor:pointer;
 </div>
 
 <script>
-const apps=[
-{
-name:"WhatsApp",
-category:"Messaging",
-img:"https://i.imgur.com/7k12ZQm.png",
-desc:"Fast messaging app",
-download:"https://play.google.com/store/apps/details?id=com.whatsapp"
-},
-{
-name:"Instagram",
-category:"Social",
-img:"https://i.imgur.com/8Km9tLL.png",
-desc:"Share photos and videos",
-download:"https://play.google.com/store/apps/details?id=com.instagram.android"
-},
-{
-name:"TikTok",
-category:"Entertainment",
-img:"https://i.imgur.com/3JmNQ0r.png",
-desc:"Short videos platform",
-download:"https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically"
-},
-{
-name:"Spotify",
-category:"Music",
-img:"https://i.imgur.com/2lZ4KfF.png",
-desc:"Listen to music",
-download:"https://play.google.com/store/apps/details?id=com.spotify.music"
-}
+const apps = [
+{name:"WhatsApp",category:"apps",img:"https://i.imgur.com/7k12ZQm.png",desc:"Messaging app",download:"https://play.google.com"},
+{name:"Instagram",category:"apps",img:"https://i.imgur.com/8Km9tLL.png",desc:"Social media",download:"https://play.google.com"},
+{name:"TikTok",category:"apps",img:"https://i.imgur.com/3JmNQ0r.png",desc:"Short videos",download:"https://play.google.com"},
+{name:"Spotify",category:"apps",img:"https://i.imgur.com/2lZ4KfF.png",desc:"Music streaming",download:"https://play.google.com"},
+
+{name:"Free Fire",category:"games",img:"https://i.imgur.com/1XQ9ZQm.png",desc:"Battle royale game",download:"https://play.google.com"},
+{name:"PUBG Mobile",category:"games",img:"https://i.imgur.com/9vQ2x7m.png",desc:"Survival shooter",download:"https://play.google.com"},
+{name:"Subway Surfers",category:"games",img:"https://i.imgur.com/4yQ8aZp.png",desc:"Endless runner",download:"https://play.google.com"},
+
+{name:"VPN Master",category:"tools",img:"https://i.imgur.com/6kT9pZQ.png",desc:"Secure VPN service",download:"https://play.google.com"},
+{name:"Files Manager",category:"tools",img:"https://i.imgur.com/8pQ1mZx.png",desc:"Manage your files",download:"https://play.google.com"}
 ];
 
-const container=document.getElementById("apps");
+let currentCat="all";
 
-function render(list){
-container.innerHTML="";
-list.forEach((app,index)=>{
-const card=document.createElement("div");
-card.className="card";
-
-card.onclick=()=>openApp(app);
-
-card.innerHTML=`
-<img src="${app.img}">
-<div class="card-content">
-<h3>${app.name}</h3>
-<p>${app.category}</p>
-<span class="badge">APP</span>
-</div>
-`;
-
-container.appendChild(card);
-});
-}
-
-function searchApps(){
-const v=document.getElementById("searchInput").value.toLowerCase();
-const f=apps.filter(a=>a.name.toLowerCase().includes(v)||a.category.toLowerCase().includes(v));
-render(f);
-}
-
-function openApp(app){
-document.getElementById("homePage").style.display="none";
-document.getElementById("detailPage").style.display="block";
-
-document.getElementById("appName").innerText=app.name;
-document.getElementById("appImg").src=app.img;
-document.getElementById("appCat").innerText=app.category;
-document.getElementById("appDesc").innerText=app.desc;
-
-document.getElementById("downloadBtn").onclick=()=>{
-window.open(app.download,"_blank");
-};
-}
-
-function back(){
-document.getElementById("homePage").style.display="block";
-document.getElementById("detailPage").style.display="none";
-}
-
-render(apps);
-</script>
-
-</body>
-</html>
+const container=document
