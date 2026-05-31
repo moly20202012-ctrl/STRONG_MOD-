@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>STRONG_MOD</title>
 
   <style>
@@ -17,9 +18,10 @@
       background: #111827;
       padding: 20px;
       text-align: center;
-      font-size: 24px;
+      font-size: 26px;
       font-weight: bold;
       color: #00bfff;
+      letter-spacing: 1px;
     }
 
     .search {
@@ -28,38 +30,62 @@
     }
 
     input {
-      width: 80%;
-      padding: 10px;
-      border-radius: 10px;
+      width: 85%;
+      padding: 12px;
+      border-radius: 12px;
       border: none;
       outline: none;
+      font-size: 16px;
     }
 
     .apps {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      padding: 20px;
+      gap: 12px;
+      padding: 15px;
     }
 
     .card {
       background: #1f2937;
       padding: 15px;
-      border-radius: 12px;
-      text-align: center;
+      border-radius: 14px;
+      transition: 0.2s;
+      cursor: pointer;
     }
 
     .card:hover {
       background: #374151;
+      transform: scale(1.03);
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #00bfff;
+    }
+
+    .card p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #d1d5db;
+    }
+
+    .card small {
+      color: #9ca3af;
     }
 
     footer {
       text-align: center;
       padding: 20px;
       color: gray;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .apps {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
-
 </head>
 
 <body>
@@ -69,33 +95,76 @@
 </header>
 
 <div class="search">
-  <input type="text" placeholder="Search apps...">
+  <input type="text" id="searchInput" placeholder="Search apps..." onkeyup="searchApps()"/>
 </div>
 
-<div class="apps">
-
-  
 <div id="apps" class="apps"></div>
 
-<script src="apps.js"></script>
+<footer>
+  © 2026 STRONG_MOD - All rights reserved
+</footer>
 
 <script>
+  const apps = [
+    {
+      name: "WhatsApp",
+      category: "Messaging",
+      desc: "Fast and secure messaging app"
+    },
+    {
+      name: "Instagram",
+      category: "Social",
+      desc: "Share photos and videos"
+    },
+    {
+      name: "TikTok",
+      category: "Entertainment",
+      desc: "Short video platform"
+    },
+    {
+      name: "Spotify",
+      category: "Music",
+      desc: "Listen to millions of songs"
+    },
+    {
+      name: "Telegram",
+      category: "Messaging",
+      desc: "Cloud-based messaging app"
+    },
+    {
+      name: "YouTube",
+      category: "Video",
+      desc: "Watch and upload videos"
+    }
+  ];
+
   const container = document.getElementById("apps");
 
-  apps.forEach(app => {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <h3>${app.name}</h3>
-      <p>${app.category}</p>
-      <small>${app.desc}</small>
-    `;
-    container.appendChild(card);
-  });
+  function renderApps(list) {
+    container.innerHTML = "";
+    list.forEach(app => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <h3>${app.name}</h3>
+        <p>${app.category}</p>
+        <small>${app.desc}</small>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function searchApps() {
+    const value = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = apps.filter(app =>
+      app.name.toLowerCase().includes(value) ||
+      app.category.toLowerCase().includes(value)
+    );
+    renderApps(filtered);
+  }
+
+  renderApps(apps);
 </script>
-<footer>
-  © 2026 STRONG_MOD
-</footer>
 
 </body>
 </html>
